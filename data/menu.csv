@@ -1,0 +1,10 @@
+"ID", "Nama Makanan", "Harga", "Stock"
+1, "Nasi Goreng", 15000, 20
+2, "Mie Goreng", 12000, 15
+3, "Ayam Bakar", 25000, 10
+4, "Sate Ayam", 20000, 25
+5, "Bakso", 18000, 30
+6, "Es Teh", 5000, 50
+7, "Es Jeruk", 7000, 40
+8, "Jus Alpukat", 12000, 20
+9, "Jus Mangga", 10000, 25
