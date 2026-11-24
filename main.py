@@ -1,53 +1,83 @@
-from modules.login import halaman_utama_login
-from modules.penjual import tambah_menu, hapus_menu, tampilkan_menu
+import csv
+import pathlib
+from datetime import datetime
+
+BASE_DIR = pathlib.Path(__file__).resolve().parent
+DIR_DATA = BASE_DIR / "data"
+DIR_DATA.mkdir(exist_ok=True)
+
+FILE_MENU      = DIR_DATA / "menu.csv"
+FILE_USER      = DIR_DATA / "user.csv"
+FILE_TRANSAKSI = DIR_DATA / "transaksi.csv"
+FILE_DETAIL    = DIR_DATA / "data_transaksi.csv"
+
+def init_data():
+    if not FILE_USER.exists():
+        with open(FILE_USER, "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            w.writerow(["Username", "Password", "Role"])
+            w.writerow(["admin", "admin123", "Admin"])
+            w.writerow(["pembeli", "12345", "User"])
+
+    if not FILE_MENU.exists():
+        with open(FILE_MENU, "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            w.writerow(["ID", "Nama", "Kategori", "Harga", "Stok"])
+            w.writerow(["1", "Nasi Goreng",    "Makanan", "15000", "20"])
+            w.writerow(["2", "Mie Goreng",     "Makanan", "12000", "15"])
+            w.writerow(["3", "Kentang Goreng", "Snack",   "18000", "10"])
+
+    if not FILE_TRANSAKSI.exists():
+        with open(FILE_TRANSAKSI, "w", newline="", encoding="utf-8") as f:
+            csv.writer(f).writerow(["id_transaksi", "username", "total"])
+
+    if not FILE_DETAIL.exists():
+        with open(FILE_DETAIL, "w", newline="", encoding="utf-8") as f:
+            csv.writer(f).writerow(["ID Transaksi", "ID Menu", "Jumlah", "Total Harga"])
+
+def baca_menu():
+    menu = []
+    if not FILE_MENU.exists():
+        return menu
+    with open(FILE_MENU, "r", newline="", encoding="utf-8-sig") as f:
+        reader = csv.reader(f)
+        baris_pertama = True
+        for row in reader:
+            if baris_pertama:
+                baris_pertama = False
+            else:
+                if len(row) >= 5:
+                    menu.append(row)
+    return menu
 
 
-def dashboard_penjual(username):
-    while True:
-        print("\n================================")
-        print("       DASHBOARD PENJUAL")
-        print("================================")
-        print("1. Tambah Menu")
-        print("2. Hapus Menu")
-        print("3. Lihat Daftar Menu")
-        print("4. Keluar")
-        print("================================")
-
-        pilihan = input("Pilih menu: ")
-
-        if pilihan == "1":
-            tambah_menu()
-
-        elif pilihan == "2":
-            hapus_menu()
-
-        elif pilihan == "3":
-            tampilkan_menu()
-
-        elif pilihan == "4":
-            print("Keluar dari dashboard penjual.")
-            break
-
-        else:
-            print("Pilihan tidak valid!")
+def simpan_menu(menu):
+    with open(FILE_MENU, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["ID", "Nama", "Kategori", "Harga", "Stok"])
+        for row in menu:
+            w.writerow(row)
 
 
-def main():
-    role, username = halaman_utama_login()
+def baca_user():
+    users = []
+    if not FILE_USER.exists():
+        return users
+    with open(FILE_USER, "r", newline="", encoding="utf-8-sig") as f:
+        reader = csv.reader(f)
+        baris_pertama = True
+        for row in reader:
+            if baris_pertama:
+                baris_pertama = False
+            else:
+                if len(row) >= 3:
+                    users.append(row)
+    return users
 
-    if role == "admin":
-        print(f"\nSelamat datang, Admin {username}!")
-        dashboard_penjual(username)
 
-    elif role == "user":
-        print("Dashboard pembeli belum dibuat.")
-
-    elif role == "guest":
-        print("Masuk sebagai Guest.")
-
-    else:
-        print("Program selesai.")
-
-
-if __name__ == "__main__":
-    main()
+def simpan_user(users):
+    with open(FILE_USER, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["Username", "Password", "Role"])
+        for row in users:
+            w.writerow(row)
