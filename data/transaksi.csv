@@ -1,1 +1,4 @@
-id_transaksi,username,tanggal,total
+id_transaksi,username,total
+
+1,dino,54000
+2,dino,36000
